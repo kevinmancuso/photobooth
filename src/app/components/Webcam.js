@@ -5,9 +5,8 @@ import Webcam from "react-webcam";
 import domtoimage from 'dom-to-image';
 import '../css/webcam.css';
 import Photoboothpreview from '../components/Photoboothpreview.js';
+import Image from 'next/image';
 
-import { getStorage, ref, uploadString } from "firebase/storage";
-import firebaseApp from '../lib/firebase'; // 🔥 centralized import
 
 const beep = "/sounds/beep.mp3";
 const shutter = "/sounds/shutter.mp3";
@@ -123,7 +122,15 @@ export const WebcamCapture = () => {
 
         <div className="film-strip-preview" id="film-strip-preview">
           {filmStrip.map((strip, index) => (
-            <li key={index}><img alt="Photobooth" src={strip.img} /></li>
+            <li key={index}>
+              {/* <img alt="Photobooth" src={strip.img} /> */}
+
+              <Image
+  alt="Photobooth"
+  src={strip.img}
+  unoptimized // if using base64 or non-optimized images
+/>
+            </li>
           ))}
         </div>
 
@@ -131,9 +138,23 @@ export const WebcamCapture = () => {
           <div className='film-strip_wrapper' id="film-strip">
             <div className="film-strip">
               {filmStrip.map((strip, index) => (
-                <li key={index}><img alt="Photobooth" src={strip.img} /></li>
+                <li key={index}>
+                  {/* <img alt="Photobooth" src={strip.img} /> */}
+                  <Image
+  alt="Photobooth"
+  src={strip.img}
+  unoptimized // if using base64 or non-optimized images
+/>
+                </li>
               ))}
-              <li key='logo'><img alt="logo" src={logo} width="50%" /></li>
+              <li key='logo'>
+                {/* <img alt="logo" src={logo} width="50%" /> */}
+                <Image
+  alt="Photobooth"
+  src={logo}
+  unoptimized // if using base64 or non-optimized images
+/>
+                </li>
             </div>
           </div>
         </div>

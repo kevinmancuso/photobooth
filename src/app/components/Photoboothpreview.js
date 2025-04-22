@@ -7,6 +7,7 @@ import { WebcamCapture } from './Webcam';
 import Photoboothprint from './PhotoboothPrint.js';
 import Photoboothsms from './PhotoboothSms.js';
 import Photoboothqr from './PhotoboothQr.js';
+import Image from 'next/image';
 
 
 const Photoboothpreview = ({ data }) => {
@@ -48,7 +49,16 @@ const Photoboothpreview = ({ data }) => {
         <div className='preview-container'>
             <div className='preview-container__print-preview-wrapper' id="print-preview">
                 <div className='preview-container__print-preview' id="film-strip">
-                    <img alt="Photobooth" src={data.photoData} />
+                    {/* <img alt="Photobooth" src={data.photoData} /> */}
+
+                    <Image
+                        alt="Photobooth"
+                        src={data.photoData}
+                        // width={500} // provide a reasonable width
+                        // height={500} // provide a reasonable height
+                        unoptimized // if using base64 or non-optimized images
+                        />
+
                     {/* <img alt="Photobooth" src={data.photoData} /> */}
                 </div>
             </div>
@@ -56,7 +66,15 @@ const Photoboothpreview = ({ data }) => {
             <div className='preview-container__preview'>
                 <button className='preview-container__preview-back' onClick={() => setRedirect(true)} />
                 <div className='preview-container__preview-container'>
-                    <img alt="Photobooth" src={data.photoData} />
+                    {/* <img alt="Photobooth" src={data.photoData} /> */}
+
+                    <Image
+  alt="Photobooth"
+  src={data.photoData}
+//   width={500} // provide a reasonable width
+//   height={500} // provide a reasonable height
+  unoptimized // if using base64 or non-optimized images
+/>
                     <div className='title'>Love It Or Hate It? <br />We Won’t Judge.</div>
                 </div>
                 <button className='preview-container__preview-print' onClick={handleSubmit} />

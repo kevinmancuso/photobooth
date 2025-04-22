@@ -47,10 +47,10 @@ function SplashScreen() {
                         <div className='title'>Grab a prop <span>&</span> strike an awesome pose</div>
                         <div className='buttons'>
                             <button className='button' onClick={qrCode}>QR Code</button>
-                            {/* <span>Or</span>
+                            <span>Or</span>
                             <button className='button' onClick={textMessage}>Text</button>
                             <span>Or</span>
-                            <button className={"button " + buttonActive} onClick={print}>Print</button> */}
+                            <button className={"button " + buttonActive} onClick={print}>Print</button>
                         </div>
                     </div>
                 </div>
