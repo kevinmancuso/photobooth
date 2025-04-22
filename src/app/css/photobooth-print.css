@@ -1,0 +1,83 @@
+.print-loader {
+  box-sizing: border-box;
+  background: #000;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-family: "Source Sans Pro", sans-serif;
+}
+.print-loader__icon-wrapper {
+}
+.print-loader__icon-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+.print-loader__icon-loading_hidden {
+  opacity: 0;
+}
+.print-loader__icon-loading span {
+  background-image: url("/img/loading.svg");
+  background-position: center;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+  animation: rotating 2s linear infinite;
+}
+.print-loader__icon-loading h2 {
+  font-size: 1.8em;
+  line-height: 1em;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  padding-top: 30px;
+}
+.print-loader__icon-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+}
+.print-loader__icon-success_hidden {
+  opacity: 0;
+}
+.print-loader__icon-success span {
+  background-image: url("/img/smile.png");
+  background-position: center;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+}
+.print-loader__icon-success h2 {
+  font-size: 1.8em;
+  line-height: 1em;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+  text-transform: uppercase;
+  padding-top: 30px;
+}
+
+@keyframes rotating {
+  from {
+    transform: rotate(360deg);
+    transform-origin: center;
+  }
+  to {
+    transform: rotate(0deg);
+    transform-origin: center;
+  }
+}

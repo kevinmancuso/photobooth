@@ -1,0 +1,135 @@
+.photobooth-container__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  max-width: 490px;
+  max-height: 600px;
+}
+.webcam-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+.webcam-container .webcam-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  display: none;
+}
+.webcam-container .film-strip_wrapper-preview {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -100;
+}
+.webcam-container .film-strip_wrapper-preview .film-strip_wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  width: 600px;
+  min-height: 1200px;
+}
+.webcam-container .film-strip_wrapper-preview .film-strip_wrapper .film-strip {
+  position: relative;
+  transform: scale(1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+}
+.webcam-container
+  .film-strip_wrapper-preview
+  .film-strip_wrapper
+  .film-strip
+  li {
+  list-style: none;
+  background-color: #fff;
+  padding: 25px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.webcam-container
+  .film-strip_wrapper-preview
+  .film-strip_wrapper
+  .film-strip
+  li:first-child {
+  margin-top: 25px;
+}
+.webcam-container
+  .film-strip_wrapper-preview
+  .film-strip_wrapper
+  .film-strip
+  li
+  img {
+  width: 100%;
+  display: flex;
+  min-width: 250px;
+}
+
+.webcam-container .film-strip-preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scale(0.2);
+  transform-origin: right top;
+}
+.webcam-container .webcam-img {
+  background-color: #fff;
+  position: relative;
+  overflow: hidden;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: all 0.1s;
+}
+.webcam-container .webcam-img::before {
+  content: "";
+  background-image: url("/img/loading.svg");
+  background-position: center;
+  background-size: cover;
+  width: 200px;
+  height: 200px;
+  animation: rotating 2s linear infinite;
+}
+.webcam-container .webcam-img.active {
+  opacity: 0.8;
+}
+.webcam-container .webcam-img video {
+  /* transform: scale(1.2);
+    position: absolute; */
+  position: relative;
+  height: 100%;
+  width: 100%;
+  left: -5%;
+  top: 0;
+  transform-origin: center;
+  transform: scale(1.3);
+}
+
+@media screen and (max-width: 1050px) {
+  .webcam-container .webcam-img video {
+    transform: scale(1.1);
+  }
+}
+@media screen and (max-width: 750px) {
+  .webcam-container .webcam-img video {
+    transform: scale(1.2);
+  }
+}

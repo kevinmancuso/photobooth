@@ -1,0 +1,92 @@
+.splash .splash-container .splash-container__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.splash .splash-container .splash-container__content .logo {
+  background-image: url("/img/logo.svg");
+  width: 190.71px;
+  height: 176.58px;
+  transition: all 0.4s;
+  background-position: center;
+  background-size: cover;
+  animation: zoom 5s infinite;
+}
+.splash .splash-container .splash-container__content .title {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 60px;
+  padding-top: 60px;
+}
+.splash .splash-container .splash-container__content .buttons {
+  padding: 10px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.splash .splash-container .splash-container__content .buttons span {
+  padding: 10px;
+  color: #fff;
+}
+.splash .splash-container .splash-container__content .button {
+  padding: 10px 25px;
+}
+.splash .splash-container .splash-container__content .button.disabled {
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/* The animation code */
+@keyframes zoom {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media screen and (max-width: 980px) {
+  .splash .splash-container .splash-container__content .logo {
+    width: calc(190.71px - 50px);
+    height: calc(176.58px - 50px);
+  }
+}
+@media screen and (max-width: 750px) {
+  @keyframes zoom {
+    0% {
+      transform: scale(0.5);
+    }
+    50% {
+      transform: scale(0.7);
+    }
+    100% {
+      transform: scale(0.5);
+    }
+  }
+  .splash .splash-container .splash-container__content .title {
+    padding-bottom: 30px;
+    padding-top: 30px;
+  }
+}
+@media screen and (max-width: 450px) {
+  @keyframes zoom {
+    0% {
+      transform: scale(0.3);
+    }
+    50% {
+      transform: scale(0.5);
+    }
+    100% {
+      transform: scale(0.3);
+    }
+  }
+  .splash .splash-container .splash-container__content .title {
+    padding-bottom: 25px;
+    padding-top: 0;
+  }
+}
