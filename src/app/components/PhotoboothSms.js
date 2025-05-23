@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../css/photobooth-print.css';
 import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
-
+import app from '../lib/firebase';
 const Photoboothsms = ({ data }) => {
   const [status, setStatus] = useState('uploading'); // "uploading", "sending", "done", "error"
   const [downloadURL, setDownloadURL] = useState(null);
@@ -16,8 +16,10 @@ const Photoboothsms = ({ data }) => {
     const uploadToFirebase = async () => {
       try {
         console.log("Uploading SMS image to Firebase...");
-        const storage = getStorage();
-        const storageRef = ref(storage, 'photobooth_sms_' + Date.now());
+        const storage = getStorage(app);
+        if (!storage) {
+          throw new Error("Firebase storage not initialized");
+        }        const storageRef = ref(storage, 'photobooth_sms_' + Date.now());
         await uploadString(storageRef, data, 'data_url');
         const url = await getDownloadURL(storageRef);
         setDownloadURL(url);

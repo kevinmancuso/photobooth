@@ -1,33 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../css/splash-screen.css';
 import PhotoboothScreen from './Photoboothscreen.js';
 
+const isOfflineMode = process.env.NEXT_PUBLIC_OFFLINE_MODE === 'true';
+
 function SplashScreen() {
     const [count, setCount] = useState(false);
-    const [lastPrintCount, setLastPrintCount] = useState(0);
-
-    useEffect(() => {
-        const stored = sessionStorage.getItem("printerCounter");
-        if (stored) {
-            setLastPrintCount(parseInt(stored));
-        }
-    }, []);
 
     function qrCode() {
         setCount(true);
         sessionStorage.setItem("userOptions", "qrCode");
     }
 
-    function textMessage() {
+    function takeShot() {
         setCount(true);
-        sessionStorage.setItem("userOptions", "text");
-    }
-
-    function print() {
-        setCount(true);
-        sessionStorage.setItem("userOptions", "print");
+        sessionStorage.setItem("userOptions", "takeShot");
     }
 
     function resetPaperCounter() {
@@ -35,8 +24,6 @@ function SplashScreen() {
         alert('Printer was restocked. Counter was successfully reset.');
         window.location.reload();
     }
-
-    const buttonActive = lastPrintCount > 2 ? 'disabled' : '';
 
     if (!count) {
         return (
@@ -46,11 +33,11 @@ function SplashScreen() {
                         <div className='logo' onClick={resetPaperCounter}>{count}</div>
                         <div className='title'>Grab a prop <span>&</span> strike an awesome pose</div>
                         <div className='buttons'>
-                            <button className='button' onClick={qrCode}>QR Code</button>
-                            <span>Or</span>
-                            <button className='button' onClick={textMessage}>Text</button>
-                            <span>Or</span>
-                            <button className={"button " + buttonActive} onClick={print}>Print</button>
+                            {isOfflineMode ? (
+                                <button className='button' onClick={takeShot}>Take a Shot</button>
+                            ) : (
+                                <button className='button' onClick={qrCode}>QR Code</button>
+                            )}
                         </div>
                     </div>
                 </div>

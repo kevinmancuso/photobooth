@@ -7,15 +7,14 @@ import '../css/webcam.css';
 import Photoboothpreview from '../components/Photoboothpreview.js';
 import Image from 'next/image';
 
-
 const beep = "/sounds/beep.mp3";
 const shutter = "/sounds/shutter.mp3";
-const logo = '/img/wedding-icon.png';
+const logo = '/img/wedding-icon-v2.png';
+
+const isOfflineMode = process.env.NEXT_PUBLIC_OFFLINE_MODE === 'true';
 
 const videoConstraints = {
-  width: 725,
-  height: 655,
-  facingMode: "user"
+  facingMode: "user",
 };
 
 export const WebcamCapture = () => {
@@ -26,6 +25,7 @@ export const WebcamCapture = () => {
   const webcamRef = useRef(null);
   const [photo, photoset] = useState(0);
   const [redirctTo, setRedirctTo] = useState(false);
+  const [webcamError, setWebcamError] = useState(null);
 
   const hasStartedRef = useRef(false);
   const totalCaptured = useRef(0);
@@ -34,6 +34,26 @@ export const WebcamCapture = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setStripImage(prev => [...prev, { img: imageSrc }]);
   }, []);
+
+  const handleFinalImage = async (dataUrl) => {
+    if (isOfflineMode) {
+      // Create a download link for the image
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `photobooth-${Date.now()}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setRedirctTo(true);
+    } else {
+      // Online mode - upload to Firebase
+      // const storage = getStorage(firebaseApp);
+      // const storageRef = ref(storage, 'photobooth' + Date.now());
+      // await uploadString(storageRef, dataUrl, 'data_url');
+      // sessionStorage.setItem("firebasePath", storageRef._location.path_);
+      setRedirctTo(true);
+    }
+  };
 
   useEffect(() => {
     if (hasStartedRef.current) return;
@@ -70,12 +90,7 @@ export const WebcamCapture = () => {
               const node = document.getElementById("film-strip");
               const dataUrl = await domtoimage.toJpeg(node);
               photoset(dataUrl);
-
-              // const storage = getStorage(firebaseApp); // 👈 use shared app instance
-              // const storageRef = ref(storage, 'photobooth' + Date.now());
-              // await uploadString(storageRef, dataUrl, 'data_url');
-              // sessionStorage.setItem("firebasePath", storageRef._location.path_);
-              setRedirctTo(true);
+              await handleFinalImage(dataUrl);
             }, 1500);
           }
         }
@@ -96,7 +111,6 @@ export const WebcamCapture = () => {
   if (redirctTo) {
     return <Photoboothpreview data={myData} />;
   }
-
   return (
     <div className='photobooth-container__content'>
       <div className="nav">
@@ -108,12 +122,21 @@ export const WebcamCapture = () => {
         <div className="webcam-img">
           <Webcam
             audio={false}
-            height={655}
+            height={637}
             ref={webcamRef}
             screenshotFormat="image/jpeg"
-            width={725}
+            width={572.13}
             videoConstraints={videoConstraints}
+            onUserMediaError={(err) => {
+              console.error("Webcam error:", err);
+              setWebcamError("Unable to access webcam. Please ensure you have granted camera permissions and try again.");
+            }}
           />
+          {webcamError && (
+            <div className="webcam-error" style={{ color: 'red', padding: '10px', textAlign: 'center' }}>
+              {webcamError}
+            </div>
+          )}
         </div>
         <button onClick={(e) => {
           e.preventDefault();
@@ -123,38 +146,42 @@ export const WebcamCapture = () => {
         <div className="film-strip-preview" id="film-strip-preview">
           {filmStrip.map((strip, index) => (
             <li key={index}>
-              {/* <img alt="Photobooth" src={strip.img} /> */}
-
               <Image
-  alt="Photobooth"
-  src={strip.img}
-  unoptimized // if using base64 or non-optimized images
-/>
+                width={490}
+                height={367}
+                alt="Photobooth"
+                src={strip.img}
+                unoptimized
+              />
             </li>
           ))}
         </div>
+
+        {/* aspect-ratio: auto 725 / 655; */}
 
         <div className='film-strip_wrapper-preview'>
           <div className='film-strip_wrapper' id="film-strip">
             <div className="film-strip">
               {filmStrip.map((strip, index) => (
                 <li key={index}>
-                  {/* <img alt="Photobooth" src={strip.img} /> */}
                   <Image
-  alt="Photobooth"
-  src={strip.img}
-  unoptimized // if using base64 or non-optimized images
-/>
+                    width={490}
+                    height={367}
+                    alt="Photobooth"
+                    src={strip.img}
+                    unoptimized
+                  />
                 </li>
               ))}
               <li key='logo'>
-                {/* <img alt="logo" src={logo} width="50%" /> */}
                 <Image
-  alt="Photobooth"
-  src={logo}
-  unoptimized // if using base64 or non-optimized images
-/>
-                </li>
+                  width={400}
+                  height={500}
+                  alt="Photobooth"
+                  src={logo}
+                  unoptimized
+                />
+              </li>
             </div>
           </div>
         </div>

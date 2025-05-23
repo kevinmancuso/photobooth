@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../css/photobooth-print.css';
 import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
+import app from '../lib/firebase';
 
 const Photoboothprint = ({ data }) => {
   const [loadingResults, setLoading] = useState(true);
@@ -17,7 +18,10 @@ const Photoboothprint = ({ data }) => {
     const uploadToFirebase = async () => {
       try {
         console.log("Uploading print image to Firebase...");
-        const storage = getStorage();
+        const storage = getStorage(app);
+        if (!storage) {
+          throw new Error("Firebase storage not initialized");
+        }
         const storageRef = ref(storage, 'photobooth_print_' + Date.now());
         await uploadString(storageRef, data, 'data_url');
         const url = await getDownloadURL(storageRef);

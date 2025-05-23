@@ -4,10 +4,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../css/photobooth-print.css';
 import { QRCodeSVG } from 'qrcode.react';
 import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
+import app from '../lib/firebase';
 
 const Photoboothqr = ({ data }) => {
   const [downloadURL, setDownloadURL] = useState(null);
-  const hasRunRef = useRef(false); // Prevent double upload in dev
+  const [storageRef, setStorageRef] = useState(null);
+  const hasRunRef = useRef(false);
 
   useEffect(() => {
     if (hasRunRef.current) return;
@@ -17,11 +19,25 @@ const Photoboothqr = ({ data }) => {
       try {
         console.log("Uploading QR code to Firebase...");
         
-        const storage = getStorage();
-        const storageRef = ref(storage, 'photobooth_qr_' + Date.now());
+        if (!data) {
+          throw new Error("No image data provided");
+        }
+
+        const storage = getStorage(app);
+        if (!storage) {
+          throw new Error("Firebase storage not initialized");
+        }
+
+        // Create a unique filename with timestamp
+        const filename = `photobooth_qr_${Date.now()}.jpg`;
+        const storageRef = ref(storage, filename);
+
+        // Upload the data URL
         await uploadString(storageRef, data, 'data_url');
         const url = await getDownloadURL(storageRef);
+        
         setDownloadURL(url);
+        setStorageRef(filename);
       } catch (err) {
         console.error("QR Upload Error:", err);
         alert("Error generating QR code. Please try again.");
@@ -45,9 +61,9 @@ const Photoboothqr = ({ data }) => {
             <span></span>
             <h2>Scan to Download Your Photo</h2>
             <div className="qr-wrapper" style={{ marginTop: '20px', textAlign: 'center' }}>
-              <QRCodeSVG value={downloadURL} size={220} />
+              <QRCodeSVG value={`${window.location.origin}/download/${storageRef}`} size={220} />
               <p style={{ marginTop: '10px', color: '#fff' }}>
-                Use your phone camera to download the photo
+                Scan with your phone camera to download
               </p>
               <button
                 style={{
